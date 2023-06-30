@@ -72,7 +72,7 @@ Note:
 For more information and updates, please visit: <URL>`)
 		os.Exit(1)
 	}
-	os.Args = os.Args[2:]
+	os.Args = os.Args[1:]
 
 	// FLAGS
 	fontSizePtr := flag.Int("fontSize", 5, "the font size between 1 and 10")
@@ -80,7 +80,7 @@ For more information and updates, please visit: <URL>`)
 	alignPtr := flag.String("alignment", "left", "the alignment of the text - left orright or center")
 	colorPtr := flag.String("color", "black", "the color of the text in hex")
 	widthPtr := flag.Int("width", 5, "the width of the text")
-
+	flag.Parse()
 	// USERNAME
 	file, err := os.OpenFile("blog-meta.json", os.O_RDONLY, 0)
 
@@ -116,11 +116,16 @@ For more information and updates, please visit: <URL>`)
 		fmt.Println("The message is too long. Max length allowed is 1729 characters.")
 		os.Exit(1)
 	}
+	
+	if strings.TrimSpace(plain) == "test" || strings.TrimSpace(plain) == "hello" || strings.TrimSpace(plain) == "trial"{
+		fmt.Printf("'%s'? Really? Do better.\n", strings.TrimSpace(plain))
+		os.Exit(1)
+	}
 
 	if author == "" {
 		author = "anon"
 	}
-
+	
 	font := [3]string{"sans", "serif", "mono"}
 	fontInFont := false
 	for _, v := range font {
@@ -167,8 +172,9 @@ For more information and updates, please visit: <URL>`)
 
 	_, err = http.Post("https://shared-blog-server.sav1tr.repl.co/post", "application/json", responseBody)
 	if err != nil {
-		fmt.Println("Something went wrong")
+		fmt.Println("Something went wrong! :(")
 	}
+	fmt.Println("received with thanks. :)")
 }
 
 func mdToHtml(md []byte) []byte {
