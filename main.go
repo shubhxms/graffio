@@ -7,14 +7,15 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
-	"github.com/gomarkdown/markdown/parser"
-	"github.com/k3a/html2text"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
+	"github.com/k3a/html2text"
 )
 
 type metadata struct {
@@ -31,14 +32,14 @@ func main() {
 	msg := os.Args[1]
 	if msg == "-h" || msg == "--help" {
 		fmt.Println(
-`
+			`
 Usage: sharedblog text [options] 
 
 Options:
   -fontSize int
         the font size between 1 and 10 (default 5)
   -fontFamily string
-        the font family - serif or sans or mono (default "serif")
+        the font family - serif or sans or monospace (default "serif")
   -alignment string
         the alignment of the text - left or right or center (default "left")
   -color string
@@ -106,7 +107,7 @@ For more information and updates, please visit: <URL>`)
 	// DATA ASSEMBLING
 	md := []byte(msg)
 	html := string(mdToHtml(md))
-	plain := html2text.HTML2Text(html)
+	plain := strings.TrimSpace(html2text.HTML2Text(html))
 	timestamp := time.Now().Unix()
 	date := time.Unix(time.Now().Unix(), 0)
 	author := meta.Name
@@ -116,8 +117,8 @@ For more information and updates, please visit: <URL>`)
 		fmt.Println("The message is too long. Max length allowed is 1729 characters.")
 		os.Exit(1)
 	}
-	
-	if strings.TrimSpace(plain) == "test" || strings.TrimSpace(plain) == "hello" || strings.TrimSpace(plain) == "trial"{
+
+	if plain == "test" || plain == "hello" || plain == "trial" {
 		fmt.Printf("'%s'? Really? Do better.\n", strings.TrimSpace(plain))
 		os.Exit(1)
 	}
@@ -125,8 +126,8 @@ For more information and updates, please visit: <URL>`)
 	if author == "" {
 		author = "anon"
 	}
-	
-	font := [3]string{"sans", "serif", "mono"}
+
+	font := [3]string{"sans", "serif", "monospace"}
 	fontInFont := false
 	for _, v := range font {
 		if v == *fontPtr {
@@ -164,16 +165,19 @@ For more information and updates, please visit: <URL>`)
 		"fontFamily": *fontPtr,
 		"width":      *widthPtr,
 	}
+
 	postBody, err := json.Marshal(item)
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	responseBody := bytes.NewBuffer(postBody)
 
 	_, err = http.Post("https://shared-blog-server.sav1tr.repl.co/post", "application/json", responseBody)
 	if err != nil {
 		fmt.Println("Something went wrong! :(")
 	}
+
 	fmt.Println("received with thanks. :)")
 }
 
