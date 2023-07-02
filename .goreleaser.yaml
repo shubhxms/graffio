@@ -28,7 +28,6 @@ archives:
       format: zip
     files:
       - README.md
-      - LICENSE*
     wrap_in_directory: true
 checksum:
   name_template: 'checksums.txt'
@@ -50,9 +49,8 @@ brews:
       email: 03.shubhamshah@gmail.com
     homepage: "https://github.com/shubhxms/shared-blog"
     description: "Internet Graffiti Wall"
-    license: "MIT"
     skip_upload: auto
-  
+
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
