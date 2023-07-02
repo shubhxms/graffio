@@ -47,7 +47,7 @@ brews:
     commit_author:
       name: shubham
       email: 03.shubhamshah@gmail.com
-    homepage: "https://github.com/shubhxms/shared-blog"
+    homepage: "https://github.com/shubhxms/graffio"
     description: "Internet Graffiti Wall"
     skip_upload: auto
 

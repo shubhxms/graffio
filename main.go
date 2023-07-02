@@ -25,44 +25,41 @@ func main() {
 
 	//USAGE
 	usage := `
-	Usage: sharedblog text [options] 
-	
-	Options:
-	  -fontSize int
-			the font size between 1 and 10 (default 5)
-	  -fontFamily string
-			the font family - serif or sans or monospace (default "serif")
-	  -alignment string
-			the alignment of the text - left or right or center (default "left")
-	  -color string
-			the color of the text in hex (default "black")
-	  -width int
-			the width of the text (default 5)
-	
-	Description:
-	  sharedblog is a command-line tool for posting blog content to a shared blog server. It takes the provided text and converts it into markdown, HTML, and plain text formats. The converted content is then pushed to the server for publication.
-	
-	Arguments:
-	  text
-			The blog content to be posted. It should be provided as a single string enclosed in quotes.
-	
-	Flags:
-	  -h, --help
-			Display this help message and exit. Use this flag to learn more about the available options and how to use the program.
-	
-	Examples:
-	  1. Post a blog with default settings:
-		  sharedblog "This is my blog content."
-		
-	  2. Post a blog with custom options:
-		  sharedblog -fontSize 8 -fontFamily sans -alignment center -color "#333333" -width 7 "This is my blog content."
-	
-	Note:
-	  - If no options are provided, the program will use default values for the font size, font family, alignment, color, and width.
-	  - The maximum allowed length for the blog content is 1729 characters.
-	  - If a username is not set, the program will default to "anon" as the author name.
-	
-	For more information and updates, please visit: <URL>`
+   Graffio is a command-line tool for posting content to a shared blog site. It takes the provided text (plaintext or Markdown) and converts it into HTML, which is then pushed to the server for publication. Each post has a 1729 character limit. 
+
+   Website: https://graffio.xyz
+ 
+Usage: graffio text [options] 
+
+Example:
+  1. Make a post with default settings:
+    graffio "This is my blog content. This is a [link](https://graffio.xyz) to the main *site*."
+  2. Make a post with custom settings:
+    graffio "This is my blog content. This is some **bold text**." -fontFamily "monospace" -fontSize 2
+ 
+Options:
+  -fontSize int
+    range: 1-10
+
+  -fontFamily string
+    serif, sans, or monospace 
+
+  -alignment string
+    left, right or center 
+
+  -color string
+    hex code, name or rgba
+
+  -width int
+    range: 1-10
+ 
+Note:
+   - If no formatting options are provided, the program will use default values for the font size (5), font family (serif), alignment (left), color (black), and width (5).
+   - If a username is not set, the program will default to "anon" as the author name.
+   - Use the -u or --username commands to change your username.
+   - You can use the graffio -d "postID" to delete a post within 15 minutes of creating it. The postID is given to you after you make a post. 
+   - You can add images using Markdown syntax: [alt text](https://link-to-image.com/image.jpg)
+   - Use --help to display this guide to Graffio.`
 	// ARGS
 	if len(os.Args) < 2 {
 		fmt.Println(usage)
@@ -89,8 +86,13 @@ func main() {
 			fmt.Println("Error sending request:", err)
 			os.Exit(1)
 		}
-		fmt.Println("Response Status:", resp.Status)
 
+		if resp.StatusCode == http.StatusForbidden {
+			fmt.Println("can only delete within 15 minutes of posting.")
+		}else if resp.StatusCode == http.StatusOK {
+			fmt.Printf("deleted msg id %s", key)
+		}
+		
 		os.Exit(1)
 	}
 	os.Args = os.Args[1:]
