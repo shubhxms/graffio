@@ -4,6 +4,14 @@ Graffio is a command-line tool for posting content to a shared blog site. It tak
 
 Website: https://graffio.xyz
 
+## Installation
+`brew tap shubhxms/tools`
+`brew install graffio`
+in your preferred terminal after installing [Homebrew](https:/homebrew.sh)
+
+Or checkout the [releases](https://github.com/shubhxms/graffio/releases)
+
+## Usage
 Usage: graffio text [options]
 
 Example:
