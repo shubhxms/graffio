@@ -40,7 +40,19 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-
+brews:
+  -
+    tap:
+      owner: shubhxms
+      name: homebrew-tools
+    commit_author:
+      name: shubham
+      email: 03.shubhamshah@gmail.com
+    homepage: "https://github.com/shubhxms/shared-blog"
+    description: "Internet Graffiti Wall"
+    license: "MIT"
+    skip_upload: auto
+  
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
